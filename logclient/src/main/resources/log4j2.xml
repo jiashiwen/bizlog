@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="PID">????</Property>
+        <Property name="LOG_PATTERN">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{%5p} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n%xwEx</Property>
+    </Properties>
+    <Appenders>
+
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+      
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+    
+        </Console>
+        <!--  <Socket name="socket" host="localhost" port="20006">
+      <PatternLayout pattern="${LOG_PATTERN}"/>
+    </Socket>-->
+            <RocketMQ name="rocketmqAppender" producerGroup="yourLogGroup" nameServerAddress="10.204.12.33:9876" topic="TopicTest" tag="logclient">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </RocketMQ>
+    </Appenders>
+    <Loggers>
+    <!-- 
+        <Logger name="org.hibernate.validator.internal.util.Version" level="warn" />
+        <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
+        <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
+         -->
+       <logger name="RocketmqRemoting" level="info" additivity="false">
+       <AppenderRef ref="Console"/>
+       </logger>
+              <logger name="RocketmqClient" level="info" additivity="false">
+       <AppenderRef ref="Console"/>
+       </logger>
+              <logger name="RocketmqCommon" level="info" additivity="false">
+       <AppenderRef ref="Console"/>
+       </logger>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="rocketmqAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
